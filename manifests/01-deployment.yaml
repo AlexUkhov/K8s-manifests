@@ -19,41 +19,41 @@ spec:
 # This section is similar to a Pod manifest              #
 # Documentation: https://kubernetes.io/docs/concepts/workloads/pods/pod/ #
 ########################################################
-metadata:
-  labels:
-    app: *app 
-    version: *version 
-spec:
-#  initContainers:
-#    - name: init-myservice
-#      image: busybox
-#      command: ['sh', '-c', 'echo Initializing...; sleep 5;']
-#      resources:
-#        requests:
-#          memory: "64Mi"
-#          cpu: "250m"
-#        limits:
-#          memory: "128Mi"
-#          cpu: "500m"
-  containers:
-    - name: nginx # change to your container name
-      image: nginx:1.27.5 # never use :latest in production
-      ports:
+    metadata:
+      labels:
+        app: *app
+        version: *version 
+    spec:
+#     initContainers:
+#       - name: init-myservice
+#         image: busybox
+#         command: ['sh', '-c', 'echo Initializing...; sleep 5;']
+#         resources:
+#           requests:
+#             memory: "64Mi"
+#             cpu: "250m"
+#           limits:
+#             memory: "128Mi"
+#             cpu: "500m"
+      containers:
+      - name: nginx # change to your container name
+        image: nginx:1.27.5 # never use :latest in production
+        ports:
         - containerPort: 80 
-      resources:
-        requests: # minimum resources required
-          memory: "64Mi"
-          cpu: "250m"
-        limits: # maximum resources allowed
-          memory: "128Mi"
-          cpu: "500m"
-      livenessProbe:
-        tcpSocket: #(exec, httpGet, tcpSocket, grpc)
-          port: 80
-        initialDelaySeconds: 15
-        periodSeconds: 10
-      readinessProbe:
-        tcpSocket:
-          port: 80
-        initialDelaySeconds: 15
-        periodSeconds: 10
+        resources:
+          requests: # minimum resources required
+            memory: "64Mi"
+            cpu: "250m"
+          limits: # maximum resources allowed
+            memory: "128Mi"
+            cpu: "500m"
+        livenessProbe:
+          tcpSocket: #(exec, httpGet, tcpSocket, grpc)
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 10
