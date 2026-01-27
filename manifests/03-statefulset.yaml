@@ -53,6 +53,7 @@ metadata:
 spec:
   serviceName: "test-st-headless" # change to your headless service name
   replicas: 3 # number of pod replicas
+#  podManagementPolicy: Parallel # to run pods in parallel (default is OrderedReady) 
   selector:
     matchLabels:
       app.kubernetes.io/name: *name
