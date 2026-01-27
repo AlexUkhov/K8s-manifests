@@ -1,0 +1,20 @@
+---
+####################### Service ######################
+#Documentation: https://kubernetes.io/docs/reference/kubernetes-api/service-resources/service-v1/
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-first-service # change to your name
+#  namespace: work
+  labels: # service labels
+    app.kubernetes.io/name: nginx # change to your name-label
+    app.kubernetes.io/version: 1.27.5 # change to your label
+spec:
+  selector:   # managed pods labels
+    app.kubernetes.io/name: nginx  
+    app.kubernetes.io/version: 1.27.5
+  ports:
+    - protocol: TCP
+      port: 80   #service port (src)
+      targetPort: 80 #container port (dest)
+      name: http  # port name

@@ -1,12 +1,14 @@
 ---
+######################### Pod #########################
+# Documentation: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/
 apiVersion: v1
 kind: Pod
 metadata:
   name: my-first-pod # change to your pod name
-  namespace: work # change to your namespace
+#  namespace: work # change to your namespace
   labels:
-    app: nginx # change to your app label
-    version: 1.27.5 # never use :latest in production
+    app.kubernetes.io/app: nginx # change to your app label
+    app.kubernetes.io/version: 1.27.5 # never use :latest in production
 spec:
 #  initContainers:
 #    - name: init-myservice
