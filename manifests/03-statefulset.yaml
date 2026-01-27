@@ -70,7 +70,7 @@ spec:
     spec:
       containers:
         - name: whoami # change to your container name
-          image: traefick/whoami # never use :latest in production
+          image: traefik/whoami # never use :latest in production
           ports:
             - containerPort: 80
               name: http
