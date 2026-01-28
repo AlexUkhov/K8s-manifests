@@ -12,7 +12,7 @@ metadata:
 spec:
   selector: # label selector to identify pods to deploy
     matchLabels:
-      app.kubernetes.io/app: *app 
+      app.kubernetes.io/app: *name
       app.kubernetes.io/instance: *instance 
       app.kubernetes.io/version: *version 
 ##################### Pod Template #####################
