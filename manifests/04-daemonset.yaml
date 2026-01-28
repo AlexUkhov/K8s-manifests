@@ -1,13 +1,14 @@
 ######################## DaemonSet ###########################
 # Documentation: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/daemon-set-v1/
+---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: test-ds # change to your deployment name 
 #  namespace: work # change to your namespace
   labels:
-    app.kubernetes.io/name: &name test-st # change to your app label
-    app.kubernetes.io/instance: &instance test-st # change to your instance label
+    app.kubernetes.io/name: &name test-ds # change to your app label
+    app.kubernetes.io/instance: &instance test-ds # change to your instance label
     app.kubernetes.io/version: &version v0.0.1 
 spec:
   selector: # label selector to identify pods to deploy
