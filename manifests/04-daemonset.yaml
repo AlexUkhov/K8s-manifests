@@ -1,0 +1,55 @@
+######################## DaemonSet ###########################
+# Documentation: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/daemon-set-v1/
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: test-ds # change to your deployment name 
+#  namespace: work # change to your namespace
+  labels:
+    app.kubernetes.io/name: &name test-ds # change to your app label
+    app.kubernetes.io/instance: &instance test-ds # change to your instance label
+    app.kubernetes.io/version: &version v0.0.1 
+spec:
+  selector: # label selector to identify pods to deploy
+    matchLabels:
+      app.kubernetes.io/app: *app 
+      app.kubernetes.io/instance: *instance 
+      app.kubernetes.io/version: *version 
+##################### Pod Template #####################
+# This section is similar to a Pod manifest              
+# Documentation: https://kubernetes.io/docs/concepts/workloads/pods/pod/ 
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: *name
+        app.kubernetes.io/instance: *instance
+        app.kubernetes.io/version: *version 
+    spec:
+      containers:
+        - name: whoami # change to your container name
+          image: traefik/whoami # never use :latest in production
+          ports:
+            - containerPort: 80
+              name: http
+              protocol: TCP
+          resources:
+            requests: # minimum resources required
+              memory: "64Mi"
+              cpu: "250m"
+            limits: # maximum resources allowed
+              memory: "128Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP 
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: 
+              path: /
+              port: http
+              scheme: HTTP 
+            initialDelaySeconds: 5
+            periodSeconds: 10
