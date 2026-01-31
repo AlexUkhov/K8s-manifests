@@ -1,0 +1,28 @@
+################### Cron Job ####################
+# Documentation: 
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: my-cronjob # change to your cronjob name
+#  namespace: work # change to your namespace
+spec:
+  schedule: "*/2 * * * *" # cron format
+#  successfulJobsHistoryLimit: 5
+#  failedJobsHistoryLimit: 5
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: test-cronjob
+              image: busybox:1.28
+              command: ["sh", "-c", "echo CronJob executed at $(date) && sleep 5 && exit 0"]
+              resources:
+                requests: # minimum resources required
+                  memory: "32Mi"
+                  cpu: "100m"
+                limits: # maximum resources allowed
+                  memory: "64Mi"
+                  cpu: "200m"
