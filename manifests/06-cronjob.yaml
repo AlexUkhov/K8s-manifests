@@ -1,5 +1,5 @@
 ################### Cron Job ####################
-# Documentation: 
+# Documentation: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/cron-job-v1/
 ---
 apiVersion: batch/v1
 kind: CronJob
