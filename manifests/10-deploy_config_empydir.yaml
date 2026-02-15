@@ -1,0 +1,81 @@
+##### Manifest for deployment using configmap as conig templayte for application
+################# and emtyDir as volume with final config ################
+--- # configMap as config template. In prod it should be in another file to de used in other deployments
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap
+data: # example config with variables
+  config-template.txt: |
+    TEST_DATABASE_HOST={{HOST}}
+    TEST_DATABASE_PORT={{PORT}}
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-configmap-emptydir
+  labels:
+    app.kubernetes.io/name: &name deploy-configmap-emptydir
+    app.kubernetes.io/instance: &instance test
+    app.kubernetes.io/version: &version v.0.0.1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: *name
+      app.kubernetes.io/instance: *instance
+      app.kubernetes.io/version: *version
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: *name
+        app.kubernetes.io/instance: *instance
+        app.kubernetes.io/version: *version
+    spec:
+      volumes:
+      - name: config-template # added configMap to deployment as config-template 
+        configMap:
+          name: configmap
+      - name: app-config # added emptyDir to deploymentas final config directory
+        emptyDir: {} 
+      initContainers:
+        - name: init-config
+          image: busybox:1.28
+          command: # here we use sed to replace variables from config template to final config
+          - "/bin/sh" 
+          - "-c"
+          - |
+            sed -e "s|{{HOST}}|$DATABASE_HOST|g" \
+                -e "s|{{PORT}}|$DATABASE_PORT|g" \
+                /config-template/config-template.txt > /config/config.txt
+                echo "config file ready"
+          env: # vars wich will be replaced to config file
+            - name: DATABASE_HOST
+              value: "example.com"
+            - name: DATABASE_PORT
+              value: "5432"
+          volumeMounts: 
+            - name: config-template # mount cofigmap as config-template to init-container
+              mountPath: /config-template
+            - name: app-config # mount emptyDir as app-config to init-container
+              mountPath: /config
+      containers:
+        - name: app
+          image: busybox:1.28
+          command: # here we use cat to read final config
+          - "/bin/sh" 
+          - "-c"
+          - |
+            cat /config/config.txt
+          volumeMounts:
+            - name: app-config # mount emptyDir as app-config to app-container
+              mountPath: /config
+          resources:
+            requests: # minimum resources required 
+              memory: "32Mi"
+              cpu: "100m"
+            limits: # maximum resources allowed
+              memory: "64Mi"
+              cpu: "200m"
+      
