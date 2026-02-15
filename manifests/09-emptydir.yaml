@@ -4,19 +4,31 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: my-pod
+  name: emptydir-pod
+  labels:
+    app.kubernetes.io/name: emptydir-pod
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: v.0.0.1
+
 spec:
+  volumes:
+  - name: shared-volume # name of the volume
+    emptyDir: {} # no more parameters needed
+#      medium: Memory # to use memory instead of tmpfs (Use with caution 
+#                     # to avoid overflowing memory or exceeding the limit 
+#                     # set by the container)
+#      sizeLimit: 1Gi # maximum size of the volume  
   containers:
-  - name: produser
+  - name: producer
     image: busybox:1.28
     command: 
-    - /bin/sh 
-    - -c
+    - "/bin/sh" 
+    - "-c"
     args:
     - |
       while true; do 
-        echo "Data generaed at $(date)"" >> /shared-data/data.txt
-        sleep 10
+        echo "Data generaed at $(date)" >> /shared-data/data.txt;
+        sleep 10;
       done
     volumeMounts:
     - name: shared-volume # name of the volume
@@ -31,9 +43,11 @@ spec:
   - name: consumer
     image: busybox:1.28
     command: 
-    - /bin/sh 
-    - -c
-    - "tail -f /shared-data/data.txt"
+    - "/bin/sh" 
+    - "-c"
+    args:
+    - |
+      tail -f /shared-data/data.txt
     volumeMounts:
     - name: shared-volume # name of the volume
       mountPath: /shared-data # path inside the container
@@ -44,10 +58,3 @@ spec:
       limits: # maximum resources allowed
         memory: "64Mi"
         cpu: "200m"
-  volumes:
-  - name: shared-volume # name of the volume
-    emptyDir: {} # no more parameters needed
-#      medium: Memory # to use memory instead of tmpfs (Use with caution 
-#                     # to avoid overflowing memory or exceeding the limit 
-#                     # set by the container)
-#      sizeLimit: 1Gi # maximum size of the volume  
