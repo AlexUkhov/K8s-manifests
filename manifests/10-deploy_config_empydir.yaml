@@ -48,8 +48,8 @@ spec:
           - |
             sed -e "s|{{HOST}}|$DATABASE_HOST|g" \
                 -e "s|{{PORT}}|$DATABASE_PORT|g" \
-                /config-template/config-template.txt > /config/config.txt
-                echo "config file ready"
+                /config-template/config-template.txt > /etc/app-config/config.txt
+                echo "config file is ready"
           env: # vars wich will be replaced to config file
             - name: DATABASE_HOST
               value: "example.com"
@@ -59,7 +59,7 @@ spec:
             - name: config-template # mount cofigmap as config-template to init-container
               mountPath: /config-template
             - name: app-config # mount emptyDir as app-config to init-container
-              mountPath: /config
+              mountPath: /etc/app-config
       containers:
         - name: app
           image: busybox:1.28
@@ -67,10 +67,11 @@ spec:
           - "/bin/sh" 
           - "-c"
           - |
-            cat /config/config.txt
+            cat /etc/app-config/config.txt
           volumeMounts:
             - name: app-config # mount emptyDir as app-config to app-container
-              mountPath: /config
+              mountPath: /etc/app-config
+              readOnly: true
           resources:
             requests: # minimum resources required 
               memory: "32Mi"
