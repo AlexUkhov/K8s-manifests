@@ -23,7 +23,7 @@ spec:
       echo "Pod UID: $UID"
       echo "Pod IP: $POD_IP"
       echo "Pod version: $POD_VERSION"
-      sllep infinity
+      sleep infinity
     env: 
       - name: NAMESPACE
         valueFrom:
