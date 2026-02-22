@@ -1,0 +1,56 @@
+######## Example of pod using Downward API with ENV variables #########
+# Documentation: https://kubernetes.io/docs/concepts/workloads/pods/downward-api/
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: downwardapi-pod
+  labels:
+    app.kubernetes.io/name: downwardapi-pod
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: v.0.0.1
+spec:
+  containers:
+  - name: app
+    image: busybox:1.28
+    command: # here we use sed to replace variables from config template to final config
+      - "/bin/sh" 
+      - "-c"
+    args:
+      - |
+        echo "Pod name: $HOSTNAME";
+        echo "Pod namespace: $NAMESPACE";
+        echo "Pod UID: $UID";
+        echo "Pod IP: $POD_IP";
+        echo "Pod version: $POD_VERSION";
+        sleep infinity
+    env: 
+      - name: NAMESPACE
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.namespace
+      - name: HOSTNAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: UID
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.uid
+      - name: POD_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: POD_VERSION
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.labels['app.kubernetes.io/version']
+    resources:
+      requests: # minimum resources required 
+        memory: "32Mi"
+        cpu: "100m"
+      limits: # maximum resources allowed
+        memory: "64Mi"
+        cpu: "200m"
+    restartPolicy: Never
+      
