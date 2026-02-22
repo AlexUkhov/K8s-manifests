@@ -30,6 +30,7 @@ spec:
       volumeMounts:
         - name: podinfo
           mountPath: /etc/podinfo
+      restartPolicy: Never
   volumes:
     - name: podinfo
       downwardAPI:
@@ -58,4 +59,3 @@ spec:
             containerName: app
             resource: limits.memory
             divisor: "1"
-      restartPolicy: Never
