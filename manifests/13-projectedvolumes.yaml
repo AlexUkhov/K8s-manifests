@@ -1,0 +1,76 @@
+##### Example of pod using Projected Volumes #########
+# Documentation: https://kubernetes.io/docs/concepts/storage/projected-volumes/
+# ConfigMap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  app.database.host: example.com
+# Secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+stringData: # use StringData for plain text values (Kubernetes will encode them to base64)
+  username: my-username
+  password: my-password
+# Pod :
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: projected-pod
+  labels:
+    app.kubernetes.io/name: projected-pod
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: v.0.0.1
+spec:
+  volumes:
+  - name: all-data
+    projected:
+      sources:
+      # 1st source: Downward API
+      - downwardAPI:
+          items:
+          - path: "name"
+            fieldRef:
+              fieldPath: metadata.name
+      # 2nd source: ConfigMap
+      - configMap:
+          name: app-config
+          items:
+            - key: app.database.host
+              path: app.database.host
+      # 3rd source: Secret
+      - secret:
+          name: my-secret
+          items:
+            - key: username
+              path: username
+            - key: password
+              path: password
+  containers:
+    - name: app
+      image: busybox:1.37
+      command: ["sh", "-c"]
+      args: |
+        echo "Pod name: $(cat /data/name)";
+        echo "Database host: $(cat /data/app.database.host)";
+        echo "Username: $(cat /data/username)";
+        echo "Password: $(cat /data/password)";
+        sleep infinity
+      volumeMounts:
+        - name: all-data
+          mountPath: /data
+      resources:
+        requests: # minimum resources required 
+          memory: "32Mi"
+          cpu: "100m"
+        limits: # maximum resources allowed
+          memory: "64Mi"
+          cpu: "200m"
+      restartPolicy: Never
