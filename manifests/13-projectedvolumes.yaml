@@ -57,7 +57,8 @@ spec:
     - name: app
       image: busybox:1.37
       command: ["sh", "-c"]
-      args: |
+      args: 
+      - |
         echo "Pod name: $(cat /data/name)";
         echo "Database host: $(cat /data/app.database.host)";
         echo "Username: $(cat /data/username)";
