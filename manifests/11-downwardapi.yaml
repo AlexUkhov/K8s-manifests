@@ -14,16 +14,16 @@ spec:
   - name: app
     image: busybox:1.28
     command: # here we use sed to replace variables from config template to final config
-    - "/bin/sh" 
-    - "-c"
+      - "/bin/sh" 
+      - "-c"
     args:
-    - |
-      echo "Pod name: $HOSTNAME"
-      echo "Pod namespace: $NAMESPACE"
-      echo "Pod UID: $UID"
-      echo "Pod IP: $POD_IP"
-      echo "Pod version: $POD_VERSION"
-      sleep infinity
+      - |
+        echo "Pod name: $HOSTNAME";
+        echo "Pod namespace: $NAMESPACE";
+        echo "Pod UID: $UID";
+        echo "Pod IP: $POD_IP";
+        echo "Pod version: $POD_VERSION";
+        sleep infinity
     env: 
       - name: NAMESPACE
         valueFrom:
