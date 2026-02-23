@@ -1,0 +1,25 @@
+#### Example of manual PV creation #########
+# Documentation: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#manual
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-01
+  labels:
+    app.kubernetes.io/name: nfs-storsge
+    app.kubernetes.io/instance: manual
+spec:
+  # storage size in a volume
+  capacity:
+    storage: 1Gi
+  # volume type (who can r/w)
+  accessModes:
+    - ReadWriteMany #(could be list of modes)
+  # what to do when volume is deleted
+  persistentVolumeReclaimPolicy: Retain
+  # storage type
+  nfs:
+    # nfs server ip addr
+    server: 192.168.0.3
+    # path in nfs server
+    path: /data
