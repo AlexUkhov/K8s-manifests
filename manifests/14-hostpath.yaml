@@ -1,0 +1,31 @@
+#### Exampe of hostPath volume #########
+# Documentation: https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-pod
+  labels:
+    app.kubernetes.io/name: hostpath-pod
+    app.kubernetes.io/instance: test
+    app.kubernetes.io/version: v.0.0.1
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    command: ["sh", "-c"]
+    args: 
+      - |
+        echo "Data from hostPath volume" > /data/data.txt
+        cat /data/data.txt
+        echo "Done!"
+    volumeMounts:
+    - name: host-data
+      mountPath: /data
+  volumes:
+    - name: host-data
+      hostPath:
+        # Path oh host machine
+        path: /tmp/hostPathData
+        type: DirectoryOrCreate # Directory | FileOrCreate | File | Socket ...
+  restartPolicy: Never
