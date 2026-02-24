@@ -5,9 +5,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: nfs-pvc-01
-  labels:
-    app.kubernetes.io/name: app-storage
-    app.kubernetes.io/instance: test
+#  labels:
+#    app.kubernetes.io/name: app-storage
+#    app.kubernetes.io/instance: test
 spec:
   # request for similar access modes
   accessModes:
@@ -15,8 +15,8 @@ spec:
   # request for starage with size or bigger
   resources:
     requests:
-      storage: 500Mi
+      storage: 1Gi
   # request for PV with same labels
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: manual
+#  selector:
+#    matchLabels:
+#      app.kubernetes.io/instance: manual
