@@ -18,6 +18,6 @@ spec:
       storage: 1Gi
   starageClass: ""
   # request for PV with same labels
-#  selector:
-#    matchLabels:
-#      app.kubernetes.io/instance: manual
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: manual
