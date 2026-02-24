@@ -17,6 +17,7 @@ spec:
     - ReadWriteMany #(could be list of modes)
   # what to do when volume is deleted
   persistentVolumeReclaimPolicy: Retain
+  starageClassName: local-path
   # storage type
   nfs:
     # nfs server ip addr
