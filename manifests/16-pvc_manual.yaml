@@ -16,7 +16,6 @@ spec:
   resources:
     requests:
       storage: 1Gi
-    storageClassName: manual
   # request for PV with same labels
 #  selector:
 #    matchLabels:
