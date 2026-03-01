@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/name: nfs-storsge
     app.kubernetes.io/instance: manual
 spec:
+  storageClassName: ""
   # storage size in a volume
   capacity:
     storage: 1Gi
