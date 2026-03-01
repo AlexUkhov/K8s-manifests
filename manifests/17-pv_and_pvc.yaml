@@ -20,7 +20,7 @@ spec:
   # storage type
   nfs:
     # nfs server ip addr
-    server: 127.0.0.1
+    server: 192.168.0.3
     # path in nfs server
     path: /data
 ---
