@@ -1,0 +1,44 @@
+##### PV&PVC Manifest #######
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-01
+  labels:
+    app.kubernetes.io/name: nfs-storsge
+    app.kubernetes.io/instance: manual
+spec:
+  # storage size in a volume
+  capacity:
+    storage: 1Gi
+  # volume type (who can r/w)
+  accessModes:
+    - ReadWriteMany #(could be list of modes)
+  # what to do when volume is deleted
+  persistentVolumeReclaimPolicy: Retain
+  # storage type
+  nfs:
+    # nfs server ip addr
+    server: 127.0.0.1
+    # path in nfs server
+    path: /data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc-01
+  labels:
+    app.kubernetes.io/name: app-storage
+    app.kubernetes.io/instance: test
+spec:
+  # request for similar access modes
+  accessModes:
+    - ReadWriteMany
+  # request for starage with size or bigger
+  resources:
+    requests:
+      storage: 500Mi
+  # request for PV with same labels
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: manual
