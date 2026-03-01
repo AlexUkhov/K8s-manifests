@@ -60,7 +60,7 @@ spec:
         claimName: nfs-pvc-01
   containers:
     - name: app
-      image: busybox:1.28
+      image: busybox:1.37
       command: # here we use sed to replace variables from config template to final config
         - "/bin/sh" 
         - "-c"
