@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/name: nfs-storsge
     app.kubernetes.io/instance: manual
 spec:
+  storageClassName: ""
   # storage size in a volume
   capacity:
     storage: 1Gi
@@ -31,6 +32,7 @@ metadata:
     app.kubernetes.io/name: app-storage
     app.kubernetes.io/instance: test
 spec:
+  storageClassName: ""
   # request for similar access modes
   accessModes:
     - ReadWriteMany
