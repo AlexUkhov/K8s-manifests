@@ -74,10 +74,10 @@ spec:
       volumeMounts:
         - name: storage
           mountPath: /data
-      resources:
-        limits:
-          memory: "128Mi"
-          cpu: "500m"
-        requests:
-          memory: "64Mi"
-          cpu: "250m"
+      #resources:
+      #  limits:
+      #    memory: "128Mi"
+      #    cpu: "500m"
+      #  requests:
+      #    memory: "64Mi"
+      #    cpu: "250m"
