@@ -57,7 +57,7 @@ spec:
   volumes:
     - name: storage
       persistentVolumeClaim:
-        claimName: nfs-pvc-01
+        claimName: nfs-pvc-02
   containers:
     - name: app
       image: busybox:1.37
