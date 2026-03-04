@@ -64,12 +64,13 @@ spec:
       command: # here we use sed to replace variables from config template to final config
         - "/bin/sh" 
         - "-c"
-      args:
-        - |
-          while true; do
-            echo "Logs: $(date)" >> /data/test.log;
-            sleep 10;
-          done
+        - "echo 'ok'"
+      #args:
+      #  - |
+      #    while true; do
+      #      echo "Logs: $(date)" >> /data/test.log;
+      #      sleep 10;
+      #    done
       volumeMounts:
         - name: storage
           mountPath: /data
