@@ -19,15 +19,16 @@ spec:
         - "/bin/sh" 
         - "-c"
         - "echo 'ok'"
+        - sleep infinity
       #args:
       #  - |
       #    while true; do
       #      echo "Logs: $(date)" >> /data/test.log;
       #      sleep 10;
       #    done
-      #volumeMounts:
-      #  - name: storage
-      #    mountPath: /data
+      volumeMounts:
+        - name: storage
+          mountPath: /data
       #resources:
       #  limits:
       #    memory: "128Mi"
